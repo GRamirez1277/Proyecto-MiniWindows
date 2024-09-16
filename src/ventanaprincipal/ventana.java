@@ -9,6 +9,7 @@ import opcionesescritorio.Reloj;
 import opcionesescritorio.SimpleTextEditor;
 import opcionesescritorio.VisorDeCarpetas;
 import opcionesescritorio.Visual;
+import usuarios.UserManagement;
 //import opcionesescritorio.VisorDeImagenes;
 
 public class ventana extends javax.swing.JFrame {
@@ -27,13 +28,12 @@ public class ventana extends javax.swing.JFrame {
 
         jPanel2.add(jLabelFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, -1, -1));  // Añadir jLabelFecha
         jPanel2.add(jLabelHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, -1, -1));  // Añadir jLabelHora
-        
+
         // Inicia el reloj
-        new Reloj(jLabelFecha, jLabelHora).start(); 
-        
+        new Reloj(jLabelFecha, jLabelHora).start();
 
     }
-   // private VisorDeImagenes visorDeImagenes = null;  // Variable de instancia para la ventana del visor de imágenes
+    // private VisorDeImagenes visorDeImagenes = null;  // Variable de instancia para la ventana del visor de imágenes
     private ConsolaDeComandos consola = null;  // Variable de instancia para la ventana de la consola
     private VisorDeCarpetas visorDeCarpetas = null;  // Variable de instancia para la ventana del visor de carpetas reproductormc
     private MusicPlayer reproductorMusica = null;  // Variable de instancia para la ventana del reproductor de música
@@ -119,7 +119,7 @@ public class ventana extends javax.swing.JFrame {
             }
         });
 
-        btn6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanaprincipal/componetesJframe/word.png"))); // NOI18N
+        btn6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ventanaprincipal/componetesJframe/instagram.png"))); // NOI18N
         btn6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn6ActionPerformed(evt);
@@ -241,10 +241,10 @@ public class ventana extends javax.swing.JFrame {
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
         //visor de imagenes
-      if (visual == null) {
-        visual = new Visual();
-    }
-    visual.setVisible(!visual.isVisible());
+        if (visual == null) {
+            visual = new Visual();
+        }
+        visual.setVisible(!visual.isVisible());
 
     }//GEN-LAST:event_btn3ActionPerformed
 
@@ -281,7 +281,6 @@ public class ventana extends javax.swing.JFrame {
             // Si no existe, la creamos
             editor = new SimpleTextEditor();
         }
-
         // Alternar la visibilidad de la ventana del SimpleTextEditor
         if (editor.isVisible()) {
             editor.setVisible(false);  // Ocultar la ventana si ya está visible
@@ -300,13 +299,21 @@ public class ventana extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // crear cuentas
-        CrearUsuario crearUsuario = new CrearUsuario(this);
-        // Configurar la ventana para que se muestre
-        javax.swing.JFrame frame = new javax.swing.JFrame("Crear Usuario");
-        frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setContentPane(crearUsuario);
-        frame.setVisible(true);
+      UserManagement userManager = new UserManagement();
+    
+    // Crear cuentas de ejemplo
+    // Aquí puedes añadir usuarios predeterminados si es necesario
+    userManager.registerUser("admin", "password");
+
+    // Crear el panel CrearUsuario y pasar la instancia de UserManagement
+    CrearUsuario crearUsuario = new CrearUsuario(this, userManager);
+    
+    // Configurar la ventana para que se muestre
+    javax.swing.JFrame frame = new javax.swing.JFrame("Crear Usuario");
+    frame.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    frame.setSize(800, 600);
+    frame.setContentPane(crearUsuario);
+    frame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
@@ -332,39 +339,41 @@ public class ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_btn6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
+    java.awt.GraphicsEnvironment ge = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment();
     java.awt.GraphicsDevice gd = ge.getDefaultScreenDevice();
 
     if (gd.isFullScreenSupported()) {
+        // Verificar si la ventana ya está en pantalla completa
         if (gd.getFullScreenWindow() == this) {
-            // Si la ventana ya está en pantalla completa, restaurarla
-            gd.setFullScreenWindow(null);
-            this.dispose();
-            try {
-                ventana ventana = new ventana();
-                ventana.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            // Si no está en pantalla completa, hacerlo
-            this.dispose();
-            setUndecorated(true); // Hacer la ventana sin bordes
-            gd.setFullScreenWindow(this);
-            
-            // Crear un nuevo JFrame con un diseño adecuado
-            javax.swing.JFrame ventana = new ventana();
-            ventana.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH); // Maximizar
-            ventana.setUndecorated(true); // Sin bordes
-            ventana.setVisible(true);
+            // Restaurar a modo ventana si ya está en pantalla completa
+            gd.setFullScreenWindow(null); // Salir de pantalla completa
+            this.dispose(); // Liberar recursos de la ventana actual
 
-            // Ajustar los componentes de la ventana al nuevo tamaño
-            ventana.revalidate();
-            ventana.repaint();
+            // Configurar la ventana nuevamente en modo normal
+            this.setUndecorated(false); // Volver a mostrar los bordes de la ventana
+            this.setVisible(true); // Mostrar la ventana restaurada
+            this.setExtendedState(javax.swing.JFrame.NORMAL); // Estado normal
+        } else {
+            // Pasar a pantalla completa
+            this.dispose(); // Liberar la ventana actual antes de cambiar a pantalla completa
+            this.setUndecorated(true); // Hacer la ventana sin bordes
+
+            // Hacer que la ventana sea de pantalla completa
+            gd.setFullScreenWindow(this);
+            this.setVisible(true); // Mostrar la ventana en pantalla completa
+
+            // Maximizar la ventana para llenar toda la pantalla
+            this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+
+            // Revalidar y repintar los componentes para ajustarlos al nuevo tamaño
+            this.revalidate();
+            this.repaint();
         }
     } else {
         System.out.println("Pantalla completa no soportada.");
     }
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {

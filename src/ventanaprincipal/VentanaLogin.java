@@ -16,6 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import usuarios.UserManagement;  // Importar la clase de manejo de usuarios
 
 public class VentanaLogin extends JPanel {
 
@@ -36,8 +37,14 @@ public class VentanaLogin extends JPanel {
     JLabel logo1 = new JLabel();
     JLabel logo2 = new JLabel();
 
+    private UserManagement userManager; // Instancia de UserManagement para manejar usuarios
+
     public VentanaLogin() {
         this.setLayout(null);
+
+        // Inicializamos UserManagement y añadimos un usuario de ejemplo
+        userManager = new UserManagement();
+        userManager.registerUser("admin", "password");
 
         // Configuración de componentes
         etiquetaLogin.setText("LOGIN");
@@ -109,15 +116,14 @@ public class VentanaLogin extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String usuario = campoUsuario.getText();
                 String contraseña = new String(campoContraseña.getPassword());
-                  new ventana().setVisible(true);
-                // Aquí debes agregar la lógica para verificar las credenciales
-                if (verificarCredenciales(usuario, contraseña)) {
+
+                // Verificamos las credenciales usando el sistema real de manejo de usuarios
+                if (userManager.authenticate(usuario, contraseña)) {
                     noExisteEquivocado.setVisible(false);
-                    // Acciones a realizar si las credenciales son correctas
-                      
+                    System.out.println("Login exitoso. Redirigiendo a la página principal...");
+                    new ventana().setVisible(true);  // Redirige a la ventana principal (ventana)
                 } else {
                     noExisteEquivocado.setVisible(true);
-                    
                 }
             }
         });
@@ -127,11 +133,5 @@ public class VentanaLogin extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Aquí puedes agregar el código para pintar el fondo si es necesario
-    }
-
-    // Método ficticio para verificar credenciales
-    private boolean verificarCredenciales(String usuario, String contraseña) {
-        // Reemplazar con la lógica real para verificar las credenciales
-        return "admin".equals(usuario) && "password".equals(contraseña);
     }
 }

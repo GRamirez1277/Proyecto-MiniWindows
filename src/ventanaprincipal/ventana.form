@@ -190,7 +190,7 @@
         <Component class="javax.swing.JButton" name="btn6">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/ventanaprincipal/componetesJframe/word.png"/>
+              <Image iconType="3" name="/ventanaprincipal/componetesJframe/instagram.png"/>
             </Property>
           </Properties>
           <Events>

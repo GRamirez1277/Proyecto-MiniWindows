@@ -56,15 +56,15 @@ public class Usuarios {
     }
 
     public String carpetaImagenes(String usuario) {
-        return usuarioFolder(usuario) + "/Mis Imágenes";
+        return usuarioFolder(usuario) + "/Imágenes";
     }
 
     public String carpetaDocumentos(String usuario) {
-        return usuarioFolder(usuario) + "/Mis Documentos";
+        return usuarioFolder(usuario) + "/Documentos";
     }
 
     public String carpetaMusica(String usuario) {
-        return usuarioFolder(usuario) + "/Mi Música";
+        return usuarioFolder(usuario) + "/Música";
     }
 
     public void crearEmpleadoFolder(String usuario) throws IOException {

@@ -169,12 +169,6 @@ public class Visual extends JFrame {
         return new ImageIcon(imagenRedimensionada);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Visual visual = new Visual();
-            visual.setVisible(true);
-        });
-    }
 
     // Clase Nodo para la lista circular
     private class Nodo {

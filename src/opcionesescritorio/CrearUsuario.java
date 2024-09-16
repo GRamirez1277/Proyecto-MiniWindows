@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import ventanaprincipal.ventana;
+import usuarios.UserManagement;  // Importar la clase de manejo de usuarios
 
 public class CrearUsuario extends JPanel {
 
@@ -27,9 +28,11 @@ public class CrearUsuario extends JPanel {
     private Font fuenteEtiquetas = new Font("Elephant", Font.PLAIN, 15);
 
     private ventana ventanaPrincipal;  // Referencia a la ventana principal
+    private UserManagement userManager; // Instancia de UserManagement para manejar usuarios
 
-    public CrearUsuario(ventana ventanaPrincipal) {
+    public CrearUsuario(ventana ventanaPrincipal, UserManagement userManager) {
         this.ventanaPrincipal = ventanaPrincipal;  // Guardar la referencia a la ventana principal
+        this.userManager = userManager;  // Guardar la referencia al UserManagement
         this.setLayout(null);
         this.setBackground(Color.DARK_GRAY);
         this.setSize(800, 600);  // Establecer el tamaño fijo del JPanel
@@ -80,13 +83,19 @@ public class CrearUsuario extends JPanel {
                 String usuario = campoUsuario.getText();
                 String contraseña = new String(campoContraseña.getPassword());
 
-                if ("Abraham".equals(usuario) && "admin".equals(contraseña)) {
-                    usuarioExiste.setVisible(false);
-                    System.out.println("Usuario creado: " + usuario);
+                if (usuario.isEmpty() || contraseña.isEmpty()) {
+                    usuarioExiste.setText("El usuario y la contraseña no pueden estar vacíos.");
+                    usuarioExiste.setVisible(true);
+                } else if (userManager.authenticate(usuario, contraseña)) {
+                    usuarioExiste.setText("El usuario ya existe.");
+                    usuarioExiste.setVisible(true);
+                } else {
+                    userManager.registerUser(usuario, contraseña);
+                    usuarioExiste.setText("Usuario creado exitosamente.");
+                    usuarioExiste.setForeground(Color.GREEN);
+                    usuarioExiste.setVisible(true);
                     campoUsuario.setText("");
                     campoContraseña.setText("");
-                } else {
-                    usuarioExiste.setVisible(true);
                 }
             }
         });
