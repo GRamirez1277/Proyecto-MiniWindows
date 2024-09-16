@@ -312,7 +312,7 @@ public class ventana extends javax.swing.JFrame {
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
         try {
             // Ruta completa del archivo .jar
-            String rutaCompleta = "C:/Users/julio/Downloads/Mini_Windows/Mini_Windows/src/ventanaprincipal/app/dist/Proyecto-Windows.jar";
+            String rutaCompleta = "C:/Users/user/Documents/NetBeansProjects/Mini_Windows/src/ventanaprincipal/app/dist/Proyecto-Windows.jar";
 
             // Comando para ejecutar el archivo .jar
             String comando = "java -jar \"" + rutaCompleta + "\"";
